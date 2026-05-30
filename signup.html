@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signup</title>
+
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+  apiKey: "AIzaSyDf9ZUBWSLJ7b2QEMQUCo66A988AF7jXBQ",
+  authDomain: "kavindusuran-29e6e.firebaseapp.com",
+  projectId: "kavindusuran-29e6e",
+  storageBucket: "kavindusuran-29e6e.firebasestorage.app",
+  messagingSenderId: "179827689813",
+  appId: "1:179827689813:web:c50bbd79659ef8f14b07dc",
+  measurementId: "G-HQMHKK2JZB"
+};
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    // Signup Function
+    window.signup = function(){
+
+      let username = document.getElementById("username").value;
+
+      let phone = document.getElementById("phone").value;
+
+      let email = document.getElementById("email").value;
+
+      let password = document.getElementById("password").value;
+
+      let confirm = document.getElementById("confirm").value;
+
+      // Empty Check
+      if(email === "" || password === "" || confirm === ""){
+        alert("Please fill Email & Password ❌");
+        return;
+      }
+
+      // Password Match
+      if(password !== confirm){
+        alert("Passwords do not match ❌");
+        return;
+      }
+
+      // Create Account
+      createUserWithEmailAndPassword(auth, email, password)
+
+      .then((userCredential) => {
+
+        alert("Signup Successful ✔️");
+
+        console.log(userCredential.user);
+
+        // Redirect
+        window.location.href = "login.html";
+
+      })
+
+      .catch((error) => {
+
+        alert(error.message);
+
+      });
+
+    }
+
+    // Show Password Function
+    window.togglePassword = function(){
+
+      let password = document.getElementById("password");
+      let confirm = document.getElementById("confirm");
+
+      if(password.type === "password"){
+
+        password.type = "text";
+        confirm.type = "text";
+
+      } else {
+
+        password.type = "password";
+        confirm.type = "password";
+
+      }
+
+    }
+
+  </script>
+
+  <style>
+
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#050505;
+      font-family:Arial;
+      overflow:hidden;
+      color:white;
+    }
+
+    /* Neon Background */
+    body::before,
+    body::after{
+      content:"";
+      position:absolute;
+      width:400px;
+      height:400px;
+      border-radius:50%;
+      filter:blur(90px);
+      animation:move 6s infinite alternate;
+    }
+
+    body::before{
+      background:#ff1493;
+      top:10%;
+      left:10%;
+    }
+
+    body::after{
+      background:#00f7ff;
+      bottom:10%;
+      right:10%;
+    }
+
+    @keyframes move{
+      0%{
+        transform:translate(0,0);
+      }
+      100%{
+        transform:translate(60px,-60px);
+      }
+    }
+
+    .box{
+      position:relative;
+      z-index:1;
+      width:320px;
+      padding:25px;
+      border-radius:15px;
+      border:2px solid #ff1493;
+      box-shadow:0 0 20px #ff1493;
+      text-align:center;
+    }
+
+    h2{
+      color:#ff1493;
+      margin-bottom:20px;
+    }
+
+    input{
+      width:92%;
+      padding:12px;
+      margin-top:12px;
+      border:none;
+      outline:none;
+      border-radius:8px;
+      background:#111;
+      color:white;
+      font-size:15px;
+    }
+
+    .show-pass{
+      margin-top:10px;
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      font-size:14px;
+      color:#ccc;
+    }
+
+    .show-pass label{
+      display:flex;
+      align-items:center;
+      cursor:pointer;
+    }
+
+    .show-pass input{
+      width:auto;
+      margin:0;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      margin-top:18px;
+      border:none;
+      border-radius:8px;
+      background:#ff1493;
+      color:white;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:bold;
+    }
+
+    button:hover{
+      background:#ff4db8;
+    }
+
+    a{
+      color:#00f7ff;
+      text-decoration:none;
+    }
+
+    p{
+      margin-top:15px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2>Create Account</h2>
+
+  <input type="text"
+         id="username"
+         placeholder="User Name">
+
+  <input type="email"
+         id="email"
+         placeholder="Enter Email">
+
+  <input type="password"
+         id="password"
+         placeholder="Enter Password">
+
+  <input type="password"
+         id="confirm"
+         placeholder="Confirm Password">
+
+  <!-- Show Password -->
+  <div class="show-pass">
+    <label>
+      <input type="checkbox"
+             onclick="togglePassword()">
+      Show Password
+    </label>
+  </div>
+
+  <button onclick="signup()">
+    Sign Up
+  </button>
+
+  <p>
+    Already have account?
+    <a href="login.html">Login</a>
+  </p>
+
+</div>
+
+</body>
+</html>
