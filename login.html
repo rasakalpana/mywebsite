@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+
+  <script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    // Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyDf9ZUBWSLJ7b2QEMQUCo66A988AF7jXBQ",
+  authDomain: "kavindusuran-29e6e.firebaseapp.com",
+  projectId: "kavindusuran-29e6e",
+  storageBucket: "kavindusuran-29e6e.firebasestorage.app",
+  messagingSenderId: "179827689813",
+  appId: "1:179827689813:web:c50bbd79659ef8f14b07dc",
+  measurementId: "G-HQMHKK2JZB"
+};
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    const auth = getAuth(app);
+
+    // Login Function
+    window.login = function(){
+
+      let email = document.getElementById("email").value;
+
+      let password = document.getElementById("password").value;
+
+      // Empty Check
+      if(email === "" || password === ""){
+        alert("Please fill all fields ❌");
+        return;
+      }
+
+      // Login
+      signInWithEmailAndPassword(auth, email, password)
+
+      .then((userCredential) => {
+
+        alert("Login Successful ✔️");
+
+        console.log(userCredential.user);
+
+        // Redirect
+        window.location.href = "home.html";
+
+      })
+
+      .catch((error) => {
+
+        alert(error.message);
+
+        console.log(error);
+
+      });
+
+    }
+
+    // Forgot Password Function
+    window.forgotPassword = function(){
+
+      let email = document.getElementById("email").value;
+
+      if(email === ""){
+        alert("Please enter your email first ❌");
+        return;
+      }
+
+      sendPasswordResetEmail(auth, email)
+
+      .then(() => {
+
+        alert("Password reset email sent ✔️");
+
+      })
+
+      .catch((error) => {
+
+        alert(error.message);
+
+      });
+
+    }
+
+    // Show Password Function
+    window.togglePassword = function(){
+
+      let password = document.getElementById("password");
+
+      if(password.type === "password"){
+        password.type = "text";
+      } else {
+        password.type = "password";
+      }
+
+    }
+
+  </script>
+
+  <style>
+
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:#050505;
+      font-family:Arial;
+      overflow:hidden;
+      color:white;
+    }
+
+    /* Neon Background */
+    body::before,
+    body::after{
+      content:"";
+      position:absolute;
+      width:400px;
+      height:400px;
+      border-radius:50%;
+      filter:blur(90px);
+      animation:move 6s infinite alternate;
+    }
+
+    body::before{
+      background:#00f7ff;
+      top:10%;
+      left:10%;
+    }
+
+    body::after{
+      background:#ff1493;
+      bottom:10%;
+      right:10%;
+    }
+
+    @keyframes move{
+      0%{
+        transform:translate(0,0);
+      }
+      100%{
+        transform:translate(60px,-60px);
+      }
+    }
+
+    .box{
+      position:relative;
+      z-index:1;
+      width:320px;
+      background:rgba(0,0,0,0.6);
+      padding:25px;
+      border-radius:15px;
+      border:2px solid #00f7ff;
+      box-shadow:0 0 20px #00f7ff;
+      backdrop-filter:blur(10px);
+      text-align:center;
+    }
+
+    h2{
+      color:#00f7ff;
+      margin-bottom:20px;
+    }
+
+    input{
+      width:92%;
+      padding:12px;
+      margin-top:12px;
+      border:none;
+      outline:none;
+      border-radius:8px;
+      background:#111;
+      color:white;
+      font-size:15px;
+    }
+
+    .show-pass{
+      margin-top:10px;
+      font-size:14px;
+      text-align:left;
+      color:#ccc;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      margin-top:18px;
+      border:none;
+      border-radius:8px;
+      background:#00f7ff;
+      color:black;
+      cursor:pointer;
+      font-size:15px;
+      font-weight:bold;
+    }
+
+    button:hover{
+      background:#5ffcff;
+    }
+
+    .forgot{
+      margin-top:12px;
+      color:#ff1493;
+      cursor:pointer;
+      display:inline-block;
+      font-size:14px;
+    }
+
+    .forgot:hover{
+      text-decoration:underline;
+    }
+
+    a{
+      color:#ff1493;
+      text-decoration:none;
+    }
+
+    p{
+      margin-top:15px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2>Login</h2>
+
+  <input type="email"
+         id="email"
+         placeholder="Enter Email">
+
+  <input type="password"
+         id="password"
+         placeholder="Enter Password">
+
+  <!-- Show Password -->
+  <div class="show-pass">
+    <input type="checkbox"
+           onclick="togglePassword()"
+           style="width:auto;">
+    Show Password
+  </div>
+
+  <button onclick="login()">
+    Login
+  </button>
+
+  <!-- Forgot Password -->
+  
+  <div class="forgot" onclick="forgotPassword()">
+    Forgot Password?
+  </div>
+
+  <p>
+    Don't have an account?
+    <a href="signup.html">Sign Up</a>
+  </p>
+
+</div>
+
+</body>
+</html>
